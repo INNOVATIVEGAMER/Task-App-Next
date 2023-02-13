@@ -1,11 +1,6 @@
 import axios from "axios";
-
-const BE_URL = process.env.BE_URL;
-const AUTH_TOKEN = localStorage.getItem("authToken");
+const BE_URL = process.env.NEXT_PUBLIC_BE_URL;
 
 export const BE_ENDPOINT = axios.create({
   baseURL: BE_URL,
-  headers: {
-    Authorization: `Bearer ${AUTH_TOKEN}`,
-  },
 });
