@@ -12,15 +12,36 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Copyright from "@/components/Copyright";
 import AuthLayout from "@/layout/AuthLayout";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "./_app";
+import { SignInUser } from "@/APIFunctions/auth";
+import { AuthContext } from "@/Context/AuthContextContainer";
+import { useRouter } from "next/router";
 
 export default function SignIn() {
+  const authContext = React.useContext(AuthContext);
+  const router = useRouter();
+
+  const mutation = useMutation({
+    mutationFn: SignInUser,
+    onSuccess: (data) => {
+      // Invalidate and refetch
+      authContext.setAuthToken(data.token);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      router.push("/dashboard");
+    },
+  });
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const email = data.get("email");
+    const password = data.get("password");
+    if (email && password)
+      mutation.mutate({
+        email: email.toString(),
+        password: password.toString(),
+      });
   };
 
   return (
@@ -69,6 +90,7 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={mutation.isLoading}
           >
             Sign In
           </Button>
