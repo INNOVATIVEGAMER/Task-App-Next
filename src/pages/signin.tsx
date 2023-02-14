@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -9,9 +9,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Copyright from "@/components/Copyright";
-import AuthLayout from "@/layout/AuthLayout";
+import Copyright from "@/components/auth/Copyright";
+import AuthLayout from "@/layout/AuthPageLayout";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "./_app";
 import { SignInUser } from "@/APIFunctions/auth";
@@ -19,7 +18,7 @@ import { AuthContext } from "@/Context/AuthContextContainer";
 import { useRouter } from "next/router";
 
 export default function SignIn() {
-  const authContext = React.useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const router = useRouter();
 
   const mutation = useMutation({
