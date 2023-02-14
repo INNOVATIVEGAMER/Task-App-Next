@@ -1,3 +1,4 @@
+import { AUTH_PATHS } from "@/Constants/AuthConstants";
 import { useRouter } from "next/router";
 import React, { createContext, useEffect, useState } from "react";
 
@@ -24,7 +25,8 @@ const AuthContextContainer = ({ children }: IProps) => {
 
     if (!AUTH_TOKEN && authToken) localStorage.setItem("authToken", authToken);
 
-    if (!AUTH_TOKEN && !authToken) router.push("/signin");
+    if (!AUTH_TOKEN && !authToken && !AUTH_PATHS.includes(router.pathname))
+      router.push("/signin");
   }, [authToken]);
 
   return (
