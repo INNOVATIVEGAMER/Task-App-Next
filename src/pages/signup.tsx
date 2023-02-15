@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Copyright from "@/components/auth/Copyright";
-import AuthLayout from "@/layout/AuthPageLayout";
+import AuthPageLayout from "@/layout/AuthPageLayout";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/Context/AuthContextContainer";
@@ -47,7 +47,7 @@ export default function SignUp() {
   };
 
   return (
-    <AuthLayout>
+    <AuthPageLayout>
       <Box
         sx={{
           marginTop: 8,
@@ -127,6 +127,6 @@ export default function SignUp() {
         </Box>
       </Box>
       <Copyright sx={{ mt: 5 }} />
-    </AuthLayout>
+    </AuthPageLayout>
   );
 }

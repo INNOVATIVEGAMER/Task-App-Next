@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Copyright from "@/components/auth/Copyright";
-import AuthLayout from "@/layout/AuthPageLayout";
+import AuthPageLayout from "@/layout/AuthPageLayout";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "./_app";
 import { SignInUser } from "@/APIFunctions/auth";
@@ -36,6 +36,9 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
+    const remember = data.get("remember");
+    if (remember?.toString()) authContext.setRememberMe(true);
+
     if (email && password)
       mutation.mutate({
         email: email.toString(),
@@ -44,7 +47,7 @@ export default function SignIn() {
   };
 
   return (
-    <AuthLayout>
+    <AuthPageLayout>
       <Box
         sx={{
           marginTop: 8,
@@ -81,7 +84,7 @@ export default function SignIn() {
             autoComplete="current-password"
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={<Checkbox name="remember" color="primary" />}
             label="Remember me"
           />
           <Button
@@ -108,6 +111,6 @@ export default function SignIn() {
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
-    </AuthLayout>
+    </AuthPageLayout>
   );
 }
