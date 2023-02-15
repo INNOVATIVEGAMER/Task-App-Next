@@ -1,4 +1,4 @@
-import * as React from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -9,43 +9,54 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Copyright from "@/components/Copyright";
-import AuthLayout from "@/layout/AuthLayout";
+import Copyright from "@/components/auth/Copyright";
+import AuthPageLayout from "@/layout/AuthPageLayout";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "./_app";
 import { SignInUser } from "@/APIFunctions/auth";
-import { AuthContext } from "@/Context/AuthContextContainer";
 import { useRouter } from "next/router";
+import { useAuth } from "@/Context/Auth";
 
 export default function SignIn() {
-  const authContext = React.useContext(AuthContext);
+  const { login } = useAuth();
   const router = useRouter();
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-  const mutation = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: SignInUser,
     onSuccess: (data) => {
       // Invalidate and refetch
-      authContext.setAuthToken(data.token);
+      login(data.token, rememberMe);
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       router.push("/dashboard");
     },
   });
+
+  const handleRememberMe = (
+    e: ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
+    console.log(checked);
+    if (checked) setRememberMe(true);
+    else setRememberMe(false);
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
+    const remember = data.get("remember");
+
     if (email && password)
-      mutation.mutate({
+      mutate({
         email: email.toString(),
         password: password.toString(),
       });
   };
 
   return (
-    <AuthLayout>
+    <AuthPageLayout>
       <Box
         sx={{
           marginTop: 8,
@@ -82,7 +93,13 @@ export default function SignIn() {
             autoComplete="current-password"
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Checkbox
+                name="remember"
+                color="primary"
+                onChange={handleRememberMe}
+              />
+            }
             label="Remember me"
           />
           <Button
@@ -90,7 +107,7 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            disabled={mutation.isLoading}
+            disabled={isLoading}
           >
             Sign In
           </Button>
@@ -109,6 +126,6 @@ export default function SignIn() {
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
-    </AuthLayout>
+    </AuthPageLayout>
   );
 }

@@ -1,16 +1,20 @@
-import AuthContextContainer, {
-  AuthContext,
-} from "@/Context/AuthContextContainer";
+import LogoutAllButton from "@/components/auth/LogOutAllButton";
+import LogoutButton from "@/components/auth/LogoutButton";
+import { useAuth } from "@/Context/Auth";
+import { Button } from "@mui/material";
 import React, { useContext } from "react";
 
 interface Props {}
 
 const Dashboard = (props: Props) => {
-  const authContext = useContext(AuthContext);
+  const { authToken } = useAuth();
+
   return (
     <>
       <div>Dashboard</div>
-      <div>{authContext.authToken}</div>
+      <div>{authToken}</div>
+      <LogoutButton />
+      <LogoutAllButton />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -7,22 +7,47 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Copyright from "@/components/Copyright";
-import AuthLayout from "@/layout/AuthLayout";
+import Copyright from "@/components/auth/Copyright";
+import AuthPageLayout from "@/layout/AuthPageLayout";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { SignUpUser } from "@/APIFunctions/auth";
+import { queryClient } from "./_app";
+import { useAuth } from "@/Context/Auth";
 
 export default function SignUp() {
+  const { login } = useAuth();
+  const router = useRouter();
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: SignUpUser,
+    onSuccess: (data) => {
+      // Invalidate and refetch
+      login(data.token, false);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      router.push("/dashboard");
+    },
+  });
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const email = data.get("email");
+    const password = data.get("password");
+    const age = data.get("age");
+    const name = data.get("name");
+
+    if (email && password && name && age)
+      mutate({
+        name: name.toString(),
+        age: Number(age.toString()),
+        email: email.toString(),
+        password: password.toString(),
+      });
   };
 
   return (
-    <AuthLayout>
+    <AuthPageLayout>
       <Box
         sx={{
           marginTop: 8,
@@ -89,6 +114,7 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={isLoading}
           >
             Sign Up
           </Button>
@@ -102,6 +128,6 @@ export default function SignUp() {
         </Box>
       </Box>
       <Copyright sx={{ mt: 5 }} />
-    </AuthLayout>
+    </AuthPageLayout>
   );
 }

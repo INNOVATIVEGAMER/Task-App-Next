@@ -5,7 +5,7 @@ interface IProps {
   children: React.ReactNode;
 }
 
-const AuthLayout = ({ children }: IProps) => {
+const AuthPageLayout = ({ children }: IProps) => {
   return (
     <Container component="main" maxWidth="xs">
       <main>{children}</main>
@@ -13,4 +13,4 @@ const AuthLayout = ({ children }: IProps) => {
   );
 };
 
-export default AuthLayout;
+export default AuthPageLayout;
