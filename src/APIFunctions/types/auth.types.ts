@@ -10,6 +10,6 @@ export type SignInUserTypes = {
   password: string;
 };
 
-export type GetProfileTypes = {
+export type AuthorizationTypes = {
   AUTH_TOKEN: string;
 };

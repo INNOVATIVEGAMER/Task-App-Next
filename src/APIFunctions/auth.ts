@@ -1,6 +1,6 @@
 import { BE_ENDPOINT } from "./../../clientAPIs";
 import {
-  GetProfileTypes,
+  AuthorizationTypes,
   SignInUserTypes,
   SignUpUserTypes,
 } from "./types/auth.types";
@@ -15,10 +15,32 @@ export const SignUpUser = ({ email, password, name, age }: SignUpUserTypes) =>
     (res) => res.data
   );
 
-export const GetProfile = ({ AUTH_TOKEN }: GetProfileTypes) => {
+export const GetProfileUser = ({ AUTH_TOKEN }: AuthorizationTypes) => {
   BE_ENDPOINT.get("/users/me", {
     headers: {
       Authorization: `Bearer ${AUTH_TOKEN}`,
     },
   }).then((res) => res.data);
 };
+
+export const LogOutUser = ({ AUTH_TOKEN }: AuthorizationTypes) =>
+  BE_ENDPOINT.post(
+    "users/logout",
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${AUTH_TOKEN}`,
+      },
+    }
+  ).then((res) => res.data);
+
+export const LogOutUserFromAllSessions = ({ AUTH_TOKEN }: AuthorizationTypes) =>
+  BE_ENDPOINT.post(
+    "/users/logoutall",
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${AUTH_TOKEN}`,
+      },
+    }
+  ).then((res) => res.data);
