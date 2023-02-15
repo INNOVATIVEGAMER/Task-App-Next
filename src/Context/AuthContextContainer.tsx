@@ -47,7 +47,6 @@ const AuthContextContainer = ({ children }: IProps) => {
       !AUTH_PATHS.includes(router.pathname)
     )
       router.push("/signin");
-    console.log("here", authToken, rememberMe);
   }, [authToken, rememberMe]);
 
   return (
