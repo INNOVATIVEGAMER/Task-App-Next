@@ -19,7 +19,7 @@ export default function SignUp() {
   const { login } = useAuth();
   const router = useRouter();
 
-  const mutation = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: SignUpUser,
     onSuccess: (data) => {
       // Invalidate and refetch
@@ -38,7 +38,7 @@ export default function SignUp() {
     const name = data.get("name");
 
     if (email && password && name && age)
-      mutation.mutate({
+      mutate({
         name: name.toString(),
         age: Number(age.toString()),
         email: email.toString(),
@@ -114,6 +114,7 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={isLoading}
           >
             Sign Up
           </Button>

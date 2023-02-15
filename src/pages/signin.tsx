@@ -22,7 +22,7 @@ export default function SignIn() {
   const router = useRouter();
   const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-  const mutation = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: SignInUser,
     onSuccess: (data) => {
       // Invalidate and refetch
@@ -49,7 +49,7 @@ export default function SignIn() {
     const remember = data.get("remember");
 
     if (email && password)
-      mutation.mutate({
+      mutate({
         email: email.toString(),
         password: password.toString(),
       });
@@ -107,7 +107,7 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            disabled={mutation.isLoading}
+            disabled={isLoading}
           >
             Sign In
           </Button>
