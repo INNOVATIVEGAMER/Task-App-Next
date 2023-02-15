@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -14,22 +14,32 @@ import AuthPageLayout from "@/layout/AuthPageLayout";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "./_app";
 import { SignInUser } from "@/APIFunctions/auth";
-import { AuthContext } from "@/Context/AuthContextContainer";
 import { useRouter } from "next/router";
+import { useAuth } from "@/Context/Auth";
 
 export default function SignIn() {
-  const authContext = useContext(AuthContext);
+  const { login } = useAuth();
   const router = useRouter();
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
   const mutation = useMutation({
     mutationFn: SignInUser,
     onSuccess: (data) => {
       // Invalidate and refetch
-      authContext.setAuthToken(data.token);
+      login(data.token, rememberMe);
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       router.push("/dashboard");
     },
   });
+
+  const handleRememberMe = (
+    e: ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
+    console.log(checked);
+    if (checked) setRememberMe(true);
+    else setRememberMe(false);
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,7 +47,6 @@ export default function SignIn() {
     const email = data.get("email");
     const password = data.get("password");
     const remember = data.get("remember");
-    if (remember?.toString()) authContext.setRememberMe(true);
 
     if (email && password)
       mutation.mutate({
@@ -84,7 +93,13 @@ export default function SignIn() {
             autoComplete="current-password"
           />
           <FormControlLabel
-            control={<Checkbox name="remember" color="primary" />}
+            control={
+              <Checkbox
+                name="remember"
+                color="primary"
+                onChange={handleRememberMe}
+              />
+            }
             label="Remember me"
           />
           <Button

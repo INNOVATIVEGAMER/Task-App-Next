@@ -11,19 +11,19 @@ import Copyright from "@/components/auth/Copyright";
 import AuthPageLayout from "@/layout/AuthPageLayout";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { AuthContext } from "@/Context/AuthContextContainer";
 import { SignUpUser } from "@/APIFunctions/auth";
 import { queryClient } from "./_app";
+import { useAuth } from "@/Context/Auth";
 
 export default function SignUp() {
-  const authContext = useContext(AuthContext);
+  const { login } = useAuth();
   const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: SignUpUser,
     onSuccess: (data) => {
       // Invalidate and refetch
-      authContext.setAuthToken(data.token);
+      login(data.token, false);
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       router.push("/dashboard");
     },
