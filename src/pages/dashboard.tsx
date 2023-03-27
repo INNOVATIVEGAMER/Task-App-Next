@@ -1,18 +1,15 @@
 import LogoutAllButton from "@/components/auth/LogOutAllButton";
 import LogoutButton from "@/components/auth/LogoutButton";
-import { useAuth } from "@/Context/Auth";
-import { Button } from "@mui/material";
+import Link from "next/link";
 import React, { useContext } from "react";
 
 interface Props {}
 
 const Dashboard = (props: Props) => {
-  const { authToken } = useAuth();
-
   return (
     <>
       <div>Dashboard</div>
-      <div>{authToken}</div>
+      <Link href="/profile">Profile</Link>
       <LogoutButton />
       <LogoutAllButton />
     </>

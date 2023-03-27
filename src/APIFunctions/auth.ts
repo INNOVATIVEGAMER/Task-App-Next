@@ -15,13 +15,12 @@ export const SignUpUser = ({ email, password, name, age }: SignUpUserTypes) =>
     (res) => res.data
   );
 
-export const GetProfileUser = ({ AUTH_TOKEN }: AuthorizationTypes) => {
+export const GetProfileUser = ({ AUTH_TOKEN }: AuthorizationTypes) =>
   BE_ENDPOINT.get("/users/me", {
     headers: {
       Authorization: `Bearer ${AUTH_TOKEN}`,
     },
   }).then((res) => res.data);
-};
 
 export const LogOutUser = ({ AUTH_TOKEN }: AuthorizationTypes) =>
   BE_ENDPOINT.post(
