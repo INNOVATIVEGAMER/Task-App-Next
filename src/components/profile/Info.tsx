@@ -1,5 +1,15 @@
-import { Grid, Paper, Stack, styled, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  Stack,
+  ToggleButton,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import EditInfoSection from "./EditInfoSection";
 
 interface IProps {
   name: string;
@@ -8,20 +18,48 @@ interface IProps {
 }
 
 const Info = ({ age, email, name }: IProps) => {
+  const [editMode, seteditMode] = useState<boolean>(false);
+
+  const closeEditMode = () => {
+    seteditMode(false);
+  };
+
   return (
     <Paper>
       <Grid container spacing={2} alignItems="center" p="1rem">
         <Grid item xs={8}>
-          <Typography>Profile -- {name}</Typography>
+          <Typography color="primary" variant="h5">
+            Public Info
+          </Typography>
         </Grid>
-        <Grid item xs={4}>
-          Edit
-        </Grid>
+        {!editMode && (
+          <Grid item xs={4}>
+            <Button
+              onClick={() => seteditMode(true)}
+              endIcon={<EditIcon color="info" fontSize="small" />}
+              color="info"
+              variant="outlined"
+            >
+              Edit
+            </Button>
+          </Grid>
+        )}
         <Grid item xs={10}>
-          <Stack spacing={2}>
-            <Typography>Email -- {email}</Typography>
-            <Typography>Age -- {age}</Typography>
-          </Stack>
+          {!editMode && (
+            <Stack spacing={2}>
+              <Typography>Name -- {name}</Typography>
+              <Typography>Email -- {email}</Typography>
+              <Typography>Age -- {age}</Typography>
+            </Stack>
+          )}
+          {editMode && (
+            <EditInfoSection
+              age={age}
+              email={email}
+              name={name}
+              closeEditMode={closeEditMode}
+            />
+          )}
         </Grid>
       </Grid>
     </Paper>

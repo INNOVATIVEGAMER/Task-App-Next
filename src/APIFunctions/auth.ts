@@ -3,6 +3,7 @@ import {
   AuthorizationTypes,
   SignInUserTypes,
   SignUpUserTypes,
+  UpdateUserTypes,
 } from "./types/auth.types";
 
 export const SignInUser = ({ email, password }: SignInUserTypes) =>
@@ -21,6 +22,17 @@ export const GetProfileUser = ({ AUTH_TOKEN }: AuthorizationTypes) =>
       Authorization: `Bearer ${AUTH_TOKEN}`,
     },
   }).then((res) => res.data);
+
+export const UpdateUser = ({ email, name, age, AUTH_TOKEN }: UpdateUserTypes) =>
+  BE_ENDPOINT.patch(
+    "/users/me",
+    { email, name, age },
+    {
+      headers: {
+        Authorization: `Bearer ${AUTH_TOKEN}`,
+      },
+    }
+  ).then((res) => res.data);
 
 export const LogOutUser = ({ AUTH_TOKEN }: AuthorizationTypes) =>
   BE_ENDPOINT.post(
