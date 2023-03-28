@@ -1,15 +1,8 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Stack,
-  ToggleButton,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import EditInfoSection from "./EditInfoSection";
+import LogoutButton from "../auth/LogoutButton";
 
 interface IProps {
   name: string;
@@ -34,14 +27,17 @@ const Info = ({ age, email, name }: IProps) => {
         </Grid>
         {!editMode && (
           <Grid item xs={4}>
-            <Button
-              onClick={() => seteditMode(true)}
-              endIcon={<EditIcon color="info" fontSize="small" />}
-              color="info"
-              variant="outlined"
-            >
-              Edit
-            </Button>
+            <Box display="flex" gap="1rem" alignItems="center">
+              <Button
+                onClick={() => seteditMode(true)}
+                endIcon={<EditIcon color="info" fontSize="small" />}
+                color="info"
+                variant="outlined"
+              >
+                Edit
+              </Button>
+              <LogoutButton />
+            </Box>
           </Grid>
         )}
         <Grid item xs={10}>
