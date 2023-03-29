@@ -22,6 +22,9 @@ const Info = ({ age, email, name }: IProps) => {
         <SecuritySection />
       </Grid>
       <Grid item xs={12}>
+        <Divider />
+      </Grid>
+      <Grid item xs={12}>
         <AppearanceSection />
       </Grid>
     </Grid>
