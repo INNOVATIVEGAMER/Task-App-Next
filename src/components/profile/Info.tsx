@@ -1,6 +1,7 @@
 import { Divider, Grid, Typography } from "@mui/material";
-import PublicInfoSection from "./PublicInfoSection";
-import SecuritySection from "./SecuritySection";
+import AppearanceSection from "./sections/AppearanceSection";
+import PublicInfoSection from "./sections/PublicInfoSection";
+import SecuritySection from "./sections/SecuritySection";
 
 interface IProps {
   name: string;
@@ -19,6 +20,9 @@ const Info = ({ age, email, name }: IProps) => {
       </Grid>
       <Grid item xs={12}>
         <SecuritySection />
+      </Grid>
+      <Grid item xs={12}>
+        <AppearanceSection />
       </Grid>
     </Grid>
   );

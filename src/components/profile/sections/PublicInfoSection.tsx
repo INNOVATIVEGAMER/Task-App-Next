@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import LogoutButton from "../auth/LogoutButton";
+import LogoutButton from "../../auth/LogoutButton";
 import EditInfoSection from "./EditInfoSection";
 import EditIcon from "@mui/icons-material/Edit";
 
