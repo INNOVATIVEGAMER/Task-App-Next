@@ -7,20 +7,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Slide,
 } from "@mui/material";
-import { TransitionProps } from "@mui/material/transitions";
 import { useMutation } from "@tanstack/react-query";
-import { forwardRef, useState } from "react";
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement<any, any>;
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { useState } from "react";
+import { SlideUpTransition } from "../common/Transitions";
 
 interface Props {}
 
@@ -61,7 +51,7 @@ const LogoutAllButton = (props: Props) => {
       </Button>
       <Dialog
         open={dialogopen}
-        TransitionComponent={Transition}
+        TransitionComponent={SlideUpTransition}
         keepMounted
         onClose={handleClickDialogClose}
         aria-describedby="alert-dialog-slide-description"
