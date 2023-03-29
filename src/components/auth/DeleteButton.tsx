@@ -1,4 +1,4 @@
-import { LogOutUserFromAllSessions } from "@/APIFunctions/auth";
+import { DeleteUser } from "@/APIFunctions/auth";
 import { useAuth } from "@/Context/Auth";
 import {
   Button,
@@ -24,7 +24,7 @@ const Transition = forwardRef(function Transition(
 
 interface Props {}
 
-const LogoutAllButton = (props: Props) => {
+const DeleteButton = (props: Props) => {
   const { authToken, logout } = useAuth();
   const [dialogopen, setdialogOpen] = useState<boolean>(false);
 
@@ -37,13 +37,13 @@ const LogoutAllButton = (props: Props) => {
   };
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: LogOutUserFromAllSessions,
+    mutationFn: DeleteUser,
     onSuccess: () => {
       logout();
     },
   });
 
-  const handleLogOut = () => {
+  const handleDelete = () => {
     if (!authToken) return;
 
     mutate({ AUTH_TOKEN: authToken });
@@ -52,12 +52,12 @@ const LogoutAllButton = (props: Props) => {
   return (
     <>
       <Button
-        variant="outlined"
+        variant="contained"
         onClick={handleClickDialogOpen}
         disabled={isLoading}
         color="error"
       >
-        Logout From All Session
+        Delete Account
       </Button>
       <Dialog
         open={dialogopen}
@@ -66,20 +66,23 @@ const LogoutAllButton = (props: Props) => {
         onClose={handleClickDialogClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>Logout From Nexus (All Sessions)</DialogTitle>
+        <DialogTitle>Leaving Nexus</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Are you really want to logout from all sessions active on different
-            devices?
+            Are you really want to delete your account ? This will result in all
+            the data related to your account completely wiped out and non
+            recoverable
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClickDialogClose}>Disagree</Button>
-          <Button onClick={handleLogOut}>Agree</Button>
+          <Button onClick={handleClickDialogClose}>Cancel</Button>
+          <Button onClick={handleDelete} color="error">
+            Delete Anyway
+          </Button>
         </DialogActions>
       </Dialog>
     </>
   );
 };
 
-export default LogoutAllButton;
+export default DeleteButton;

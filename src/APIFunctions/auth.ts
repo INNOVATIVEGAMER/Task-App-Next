@@ -36,7 +36,7 @@ export const UpdateUser = ({ email, name, age, AUTH_TOKEN }: UpdateUserTypes) =>
 
 export const LogOutUser = ({ AUTH_TOKEN }: AuthorizationTypes) =>
   BE_ENDPOINT.post(
-    "users/logout",
+    "/users/logout",
     {},
     {
       headers: {
@@ -44,6 +44,13 @@ export const LogOutUser = ({ AUTH_TOKEN }: AuthorizationTypes) =>
       },
     }
   ).then((res) => res.data);
+
+export const DeleteUser = ({ AUTH_TOKEN }: AuthorizationTypes) =>
+  BE_ENDPOINT.delete("/users/me", {
+    headers: {
+      Authorization: `Bearer ${AUTH_TOKEN}`,
+    },
+  }).then((res) => res.data);
 
 export const LogOutUserFromAllSessions = ({ AUTH_TOKEN }: AuthorizationTypes) =>
   BE_ENDPOINT.post(

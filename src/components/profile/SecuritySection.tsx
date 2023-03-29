@@ -1,6 +1,7 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import LogoutAllButton from "../auth/LogoutAllButton";
 import KeyIcon from "@mui/icons-material/Key";
+import DeleteButton from "../auth/DeleteButton";
 
 interface IProps {}
 
@@ -23,6 +24,7 @@ const SecuritySection = ({}: IProps) => {
             Change Password
           </Button>
           <LogoutAllButton />
+          <DeleteButton />
         </Box>
       </Grid>
     </Grid>
