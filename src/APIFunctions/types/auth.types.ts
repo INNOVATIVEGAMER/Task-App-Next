@@ -13,3 +13,9 @@ export type SignInUserTypes = {
 export type AuthorizationTypes = {
   AUTH_TOKEN: string;
 };
+
+export type UpdateUserTypes = {
+  name: string;
+  age: number;
+  email: string;
+} & AuthorizationTypes;

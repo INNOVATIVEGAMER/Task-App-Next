@@ -16,6 +16,7 @@ import { queryClient } from "./_app";
 import { SignInUser } from "@/APIFunctions/auth";
 import { useRouter } from "next/router";
 import { useAuth } from "@/Context/Auth";
+import { QUERY_KEYS } from "@/Constants/TanstackConstants";
 
 export default function SignIn() {
   const { login } = useAuth();
@@ -27,7 +28,7 @@ export default function SignIn() {
     onSuccess: (data) => {
       // Invalidate and refetch
       login(data.token, rememberMe);
-      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER_PROFILE] });
       router.push("/dashboard");
     },
   });
@@ -36,7 +37,6 @@ export default function SignIn() {
     e: ChangeEvent<HTMLInputElement>,
     checked: boolean
   ) => {
-    console.log(checked);
     if (checked) setRememberMe(true);
     else setRememberMe(false);
   };
@@ -46,7 +46,6 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
-    const remember = data.get("remember");
 
     if (email && password)
       mutate({

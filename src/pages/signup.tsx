@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { SignUpUser } from "@/APIFunctions/auth";
 import { queryClient } from "./_app";
 import { useAuth } from "@/Context/Auth";
+import { QUERY_KEYS } from "@/Constants/TanstackConstants";
 
 export default function SignUp() {
   const { login } = useAuth();
@@ -24,7 +25,7 @@ export default function SignUp() {
     onSuccess: (data) => {
       // Invalidate and refetch
       login(data.token, false);
-      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER_PROFILE] });
       router.push("/dashboard");
     },
   });
