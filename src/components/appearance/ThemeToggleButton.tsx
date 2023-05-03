@@ -1,5 +1,5 @@
 import { useThemeMode } from "@/Context/ThemeMode";
-import { Box, styled, Switch, Typography } from "@mui/material";
+import { Box, styled, Switch, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 
 interface IProps {}
@@ -53,11 +53,17 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 const ThemeToggleButton = ({}: IProps) => {
   const { toggleColorMode } = useThemeMode();
+  const {
+    palette: { mode },
+  } = useTheme();
 
   return (
     <Box display="flex" gap="1rem" alignItems="center">
       <Typography>Theme </Typography>
-      <MaterialUISwitch onClick={toggleColorMode} />
+      <MaterialUISwitch
+        onClick={toggleColorMode}
+        defaultChecked={mode === "dark"}
+      />
     </Box>
   );
 };
