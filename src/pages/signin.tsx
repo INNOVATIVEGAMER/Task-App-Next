@@ -17,6 +17,8 @@ import { SignInUser } from "@/APIFunctions/auth";
 import { useRouter } from "next/router";
 import { useAuth } from "@/Context/Auth";
 import { QUERY_KEYS } from "@/Constants/TanstackConstants";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 export default function SignIn() {
   const { login } = useAuth();
@@ -30,6 +32,13 @@ export default function SignIn() {
       login(data.token, rememberMe);
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER_PROFILE] });
       router.push("/dashboard");
+      toast.success("Welcome");
+    },
+    onError: (error: AxiosError) => {
+      toast.error(error.response?.data as string, {
+        style: { width: "500px" },
+        autoClose: 5000,
+      });
     },
   });
 

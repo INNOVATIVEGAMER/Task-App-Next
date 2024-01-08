@@ -34,7 +34,7 @@ const AuthProvider = ({ children }: IProps) => {
     else if (!authToken && !AUTH_PATHS.includes(router.pathname)) {
       router.push("/signin");
     }
-  }, [authToken, router.pathname]);
+  }, [authToken, router]);
 
   // Login function that sets the auth token and remembers the user if desired
   const login = (token: string, remember: boolean) => {
