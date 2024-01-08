@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -19,11 +19,14 @@ import { useAuth } from "@/Context/Auth";
 import { QUERY_KEYS } from "@/Constants/TanstackConstants";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import { Divider } from "@mui/material";
+import Oauth from "@/components/auth/Oauth";
 
 export default function SignIn() {
   const { login } = useAuth();
   const router = useRouter();
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [tokenProcessing, setTokenProcessing] = useState<boolean>(false);
 
   const { mutate, isLoading } = useMutation({
     mutationFn: SignInUser,
@@ -41,6 +44,17 @@ export default function SignIn() {
       });
     },
   });
+
+  useEffect(() => {
+    const oauthToken = router.query.token as string;
+    if (!oauthToken || tokenProcessing) return;
+
+    setTokenProcessing(true);
+    login(oauthToken, true);
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER_PROFILE] });
+    router.push("/dashboard");
+    toast.success("Welcome");
+  }, [login, router, tokenProcessing]);
 
   const handleRememberMe = (
     e: ChangeEvent<HTMLInputElement>,
@@ -71,69 +85,85 @@ export default function SignIn() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          gap: "16px",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="remember"
-                color="primary"
-                onChange={handleRememberMe}
-              />
-            }
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={isLoading}
+        <Oauth />
+        <Divider style={{ width: "100%" }} />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
           >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="remember"
+                  color="primary"
+                  onChange={handleRememberMe}
+                />
+              }
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={isLoading}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/signup" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+          </Box>
         </Box>
+        <Copyright />
       </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
     </AuthPageLayout>
   );
 }

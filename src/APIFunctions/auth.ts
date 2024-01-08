@@ -11,6 +11,9 @@ export const SignInUser = ({ email, password }: SignInUserTypes) =>
     (res) => res.data
   );
 
+export const AuthGoogle = () =>
+  BE_ENDPOINT.post("/users/google").then((res) => res.data);
+
 export const SignUpUser = ({ email, password, name, age }: SignUpUserTypes) =>
   BE_ENDPOINT.post("/users", { email, password, name, age }).then(
     (res) => res.data
