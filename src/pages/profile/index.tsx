@@ -3,7 +3,7 @@ import Info from "@/components/profile/Info";
 import { QUERY_KEYS } from "@/Constants/TanstackConstants";
 import { useAuth } from "@/Context/Auth";
 import { isAuthError } from "@/helpers/authHelpers";
-import ProfilePageLayout from "@/layout/ProfilePageLayout";
+import AuthenticatedPageLayout from "@/layout/AuthenticatedPageLayout";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -29,17 +29,17 @@ const ProfilePage = ({}: IProps) => {
   });
 
   return (
-    <ProfilePageLayout>
+    <AuthenticatedPageLayout>
       {(isFetching || isLoading) && <CircularProgress />}
       {!isFetching && !isLoading && data && (
         <>
-          <Box my="2rem">
+          <Box mb={2}>
             <Typography variant="h2">Profile Page</Typography>
           </Box>
           <Info name={data.name} age={data.age} email={data.email} />
         </>
       )}
-    </ProfilePageLayout>
+    </AuthenticatedPageLayout>
   );
 };
 

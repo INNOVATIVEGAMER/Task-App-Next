@@ -1,3 +1,4 @@
+import AuthenticatedPageLayout from "@/layout/AuthenticatedPageLayout";
 import Link from "next/link";
 import React from "react";
 
@@ -5,10 +6,9 @@ interface Props {}
 
 const Dashboard = (props: Props) => {
   return (
-    <>
+    <AuthenticatedPageLayout>
       <div>Dashboard</div>
-      <Link href="/profile">Profile</Link>
-    </>
+    </AuthenticatedPageLayout>
   );
 };
 
