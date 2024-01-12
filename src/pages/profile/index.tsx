@@ -1,13 +1,12 @@
 import { GetProfileUser } from "@/APIFunctions/auth";
-import { isAuthError } from "@/components/common/helpers";
 import Info from "@/components/profile/Info";
 import { QUERY_KEYS } from "@/Constants/TanstackConstants";
 import { useAuth } from "@/Context/Auth";
+import { isAuthError } from "@/helpers/authHelpers";
 import ProfilePageLayout from "@/layout/ProfilePageLayout";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import React, { useCallback } from "react";
 
 interface IProps {}
 
