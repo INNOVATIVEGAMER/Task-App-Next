@@ -5,6 +5,8 @@ import { AuthProvider } from "@/Context/Auth";
 import { ThemeModeProvider } from "@/Context/ThemeMode";
 import "react-toastify/dist/ReactToastify.css";
 import { Flip, ToastContainer } from "react-toastify";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 export const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -27,6 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
           />
           <Component {...pageProps} />
         </ThemeModeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AuthProvider>
   );
